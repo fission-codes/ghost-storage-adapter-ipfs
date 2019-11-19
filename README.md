@@ -6,6 +6,7 @@ A storage adapter for the Ghost blogging platform, so that files and images are 
 
 Meant to work alongside [heroku-ipfs-ghost](https://github.com/fission-suite/heroku-ipfs-ghost).
 
+See the [Fission Talk Forum for background](https://talk.fission.codes/t/fission-ipfs-storage-adapter-for-ghost-blog/88)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/fission-suite/blob/master/LICENSE)
 [![Built by FISSION](https://img.shields.io/badge/⌘-Built_by_FISSION-purple.svg)](https://fission.codes)
