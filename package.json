@@ -1,0 +1,17 @@
+{
+  "name": "ghost-storage-adapter-ipfs",
+  "description": "A storage adapter for the Ghost blogging platform, so that files and images are stored on IPFS",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fission-suite/ghost-storage-adapter-ipfs"
+  },
+  "private": true,
+  "dependencies": {
+    "ghost-storage-base": "0.0.3"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {}
+}
