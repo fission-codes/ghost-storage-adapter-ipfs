@@ -5,8 +5,17 @@ const BaseAdapter = require("ghost-storage-base");
 const path = require("path");
 const fs = require("fs");
 
-const username = process.env.fissionUserName;
-const password = process.env.fissionPassword;
+const username = process.env.FISSION_USERNAME;
+const password = process.env.FISSION_PASSWORD;
+
+if(!username) {
+  throw new Error("Missing Environment Variable: FISSION_USERNAME");
+}
+
+if(!password) {
+  throw new Error("Missing Environment Variable: FISSION_PASSWORD");
+}
+
 const fission = new Fission();
 const fissionUser = new Fission.FissionUser(username, password);
 
