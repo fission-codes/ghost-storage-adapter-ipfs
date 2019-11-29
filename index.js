@@ -19,6 +19,16 @@ if(!password) {
 const fission = new Fission();
 const fissionUser = new Fission.FissionUser(username, password);
 
+let cids;
+(async () => {
+  try {
+    cids = await fissionUser.cids();
+    console.log(cids);
+  } catch (err) {
+    throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
+  }
+})();
+
 const readFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, (err, bytes) => {
