@@ -79,6 +79,7 @@ class FissionStorageAdapter extends BaseAdapter{
   
   serve() {
     return function customServe(req, res, next) {
+      console.log(JSON.stringify(req,null," "));
       next();
     }
   }
