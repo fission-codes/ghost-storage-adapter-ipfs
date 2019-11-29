@@ -2,7 +2,6 @@
 
 const Fission = require("@fission-suite/client");
 const BaseAdapter = require("ghost-storage-base");
-const path = require("path");
 const fs = require("fs");
 
 const username = process.env.FISSION_USERNAME;
@@ -44,7 +43,6 @@ const readFile = (filePath) => {
 class FissionStorageAdapter extends BaseAdapter{
   constructor(options) {
     super(options);
-    
     this.options = options || {};
   }
   
