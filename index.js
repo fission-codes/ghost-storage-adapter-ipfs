@@ -50,7 +50,6 @@ class FissionStorageAdapter extends BaseAdapter{
     console.log(fileName);
     console.log(targetDir);
     return Promise.reject('exists not implemented');
-    // Only relevant if double pinning is problematic?
   }
 
   /**
@@ -64,22 +63,16 @@ class FissionStorageAdapter extends BaseAdapter{
    */
   save(image, targetDir) {
     return new Promise(async (resolve, reject) => {
-      let bytes;
       try {
         const filePath = path.join(image.path,targetDir);
-        bytes = await readFile(filePath);
-      } catch {
-        reject(err);
-      }
-      
-      try {
+        const bytes = await readFile(filePath);
         const cid = await fissionUser.add(bytes);
         await fissionUser.pin(cid);
         resolve(fission.url(cid));
       } catch(err) {
         reject(err);
       }
-    })
+    });
   }
 
   serve() {
@@ -92,8 +85,6 @@ class FissionStorageAdapter extends BaseAdapter{
     console.log(fileName);
     console.log(targetDir);
     return Promise.reject('delete not implemented');
-    // How to access from fileName/targetDir
-    // return fissionUser.remove(cid);
   }
 
   read(options) {
