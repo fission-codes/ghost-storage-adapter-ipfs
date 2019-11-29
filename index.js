@@ -16,7 +16,7 @@ if(!password) {
   throw new Error("Missing Environment Variable: FISSION_PASSWORD");
 }
 
-const fission = new Fission();
+const fission = new Fission.default();
 const fissionUser = new Fission.FissionUser(username, password);
 
 let cids;
@@ -42,8 +42,10 @@ const readFile = (filePath) => {
 }
 
 class FissionStorageAdapter extends BaseAdapter{
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
+    
+    this.options = options || {};
   }
   
   exists(fileName, targetDir) {
@@ -62,10 +64,12 @@ class FissionStorageAdapter extends BaseAdapter{
    * @returns {*}
    */
   save(image, targetDir) {
+    console.log(JSON.stringify(image,null," "));
+    console.log(JSON.stringify(targetDir,null," "));
+    
     return new Promise(async (resolve, reject) => {
       try {
-        const filePath = path.join(image.path,targetDir);
-        const bytes = await readFile(filePath);
+        const bytes = await readFile(image.path);
         const cid = await fissionUser.add(bytes);
         await fissionUser.pin(cid);
         resolve(fission.url(cid));
@@ -74,20 +78,22 @@ class FissionStorageAdapter extends BaseAdapter{
       }
     });
   }
-
+  
   serve() {
     return function customServe(req, res, next) {
       next();
     }
   }
-
+  
   delete(fileName, targetDir) {
     console.log(fileName);
     console.log(targetDir);
     return Promise.reject('delete not implemented');
   }
-
+  
   read(options) {
+    console.log(JSON.stringify(options,null," "));
+
     const cid = options.path.split("/").pop();
     return fission.content(cid);
   }
