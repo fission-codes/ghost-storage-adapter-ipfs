@@ -23,7 +23,7 @@ Fission Storage Adapter: Successfully Connected
   `);
 }
   
-const authenticate = (username, password, baseURL) => {
+const authenticate = (username, password, apiURL) => {
   let fissionUser;
   if(!username) {
     throw new Error("Missing Environment Variable: FISSION_USERNAME");
@@ -33,10 +33,10 @@ const authenticate = (username, password, baseURL) => {
     throw new Error("Missing Environment Variable: FISSION_PASSWORD");
   }
   
-  if(!baseURL) {
+  if(!apiURL) {
     fissionUser = new Fission.FissionUser(username, password);
   } else {
-    fissionUser = new Fission.FissionUser(username, password, baseURL);
+    fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
   
   (async () => {
@@ -51,4 +51,26 @@ const authenticate = (username, password, baseURL) => {
   return fissionUser;
 }
 
-module.exports = { readFile, authenticate }
+const normalizeURL = (gatewayURL) => {
+  let normalized = gatewayURL.trim();
+  
+  // Ensure protocol
+  if(!normalized.includes("://")) {
+    normalized = "https://" + normalized;
+  }
+
+  // Remove queries
+  normalized = normalized.split("?")[0];
+  
+  // Remove hashes
+  normalized = normalized.split("#")[0];
+
+  // Remove trailing slash
+  if(normalized.endsWith("/")) {
+    normalized = normalized.slice(0,-1);
+  }
+
+  return normalized;
+}
+
+module.exports = { readFile, authenticate, normalizeURL }

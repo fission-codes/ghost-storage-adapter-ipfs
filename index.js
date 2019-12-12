@@ -1,13 +1,22 @@
 'use strict';
 
 const BaseAdapter = require("ghost-storage-base");
-const { readFile, authenticate } = require("./utils");
+const { readFile, authenticate, normalizeURL } = require("./utils");
+
+const DEFAULT_IPFS_GATEWAY = "https://ipfs.io/ipfs";
 
 class FissionStorageAdapter extends BaseAdapter{
   constructor(options) {
-    const { username, password, baseURL } = options;
+    const { username, password, apiURL, gatewayURL } = options;
     super();
-    this.fissionUser = authenticate(username, password, baseURL);
+    
+    this.fissionUser = authenticate(username, password, apiURL);
+    
+    if(typeof gatewayURL === "string") {
+      this.gatewayURL = normalizeURL(gatewayURL);
+    } else {
+      this.gatewayURL = DEFAULT_IPFS_GATEWAY;
+    }
   }
 
   save(image) {
@@ -16,7 +25,7 @@ class FissionStorageAdapter extends BaseAdapter{
         const bytes = await readFile(image.path);
         const cid = await this.fissionUser.add(bytes);
         await this.fissionUser.pin(cid);
-        resolve(this.fissionUser.url(cid));
+        resolve(`${this.gatewayURL}/${cid}`);
       } catch(err) {
         reject(err);
       }
