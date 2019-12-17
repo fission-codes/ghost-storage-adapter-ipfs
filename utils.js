@@ -3,6 +3,39 @@
 const Fission = require("@fission-suite/client");
 const fs = require("fs");
 
+const normalizeURL = (rawURL) => {
+  let normalized = rawURL.trim();
+  
+  // Ensure protocol
+  if(!normalized.includes("://")) {
+    normalized = "https://" + normalized;
+  }
+
+  // Remove queries
+  normalized = normalized.split("?")[0];
+  
+  // Remove hashes
+  normalized = normalized.split("#")[0];
+
+  // Remove trailing slash
+  if(normalized.endsWith("/")) {
+    normalized = normalized.slice(0,-1);
+  }
+
+  return normalized;
+}
+
+const normalizeGatewayURL = (rawURL) => {
+  let normalized = normalizeURL(rawURL);
+
+  // Ensure ipfs path
+  if(!normalized.endsWith("/ipfs")) {
+    normalized += "/ipfs";
+  }
+
+  return normalized;
+}
+
 const readFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, (err, bytes) => {
@@ -22,7 +55,7 @@ Fission Storage Adapter: Successfully Connected
   * Currently hosting ${numFiles} files
   `);
 }
-  
+ 
 const authenticate = (username, password, apiURL) => {
   let fissionUser;
   if(!username) {
@@ -51,26 +84,4 @@ const authenticate = (username, password, apiURL) => {
   return fissionUser;
 }
 
-const normalizeURL = (gatewayURL) => {
-  let normalized = gatewayURL.trim();
-  
-  // Ensure protocol
-  if(!normalized.includes("://")) {
-    normalized = "https://" + normalized;
-  }
-
-  // Remove queries
-  normalized = normalized.split("?")[0];
-  
-  // Remove hashes
-  normalized = normalized.split("#")[0];
-
-  // Remove trailing slash
-  if(normalized.endsWith("/")) {
-    normalized = normalized.slice(0,-1);
-  }
-
-  return normalized;
-}
-
-module.exports = { readFile, authenticate, normalizeURL }
+module.exports = { readFile, authenticate, normalizeGatewayURL }

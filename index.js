@@ -13,7 +13,7 @@ class FissionStorageAdapter extends BaseAdapter{
     this.fissionUser = authenticate(username, password, apiURL);
     
     if(typeof gatewayURL === "string") {
-      this.gatewayURL = normalizeURL(gatewayURL);
+      this.gatewayURL = normalizeGatewayURL(gatewayURL);
     } else {
       this.gatewayURL = DEFAULT_IPFS_GATEWAY;
     }
