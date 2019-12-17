@@ -2,6 +2,7 @@
 
 const Fission = require("@fission-suite/client");
 const fs = require("fs");
+const { DEFAULT_IPFS_GATEWAY_URL } = require("./constants");
 
 const normalizeURL = (rawURL) => {
   let normalized = rawURL.trim();
@@ -36,6 +37,15 @@ const normalizeGatewayURL = (rawURL) => {
   return normalized;
 }
 
+const configGatewayURL = (rawURL) => {
+  if(typeof rawURL === "string") {
+    return normalizeGatewayURL(rawURL);
+  } else {
+    return DEFAULT_IPFS_GATEWAY_URL;
+  }
+}
+
+
 const readFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, (err, bytes) => {
@@ -67,7 +77,7 @@ const ensureUserAuth = (fissionUser) => {
   })();
 }
 
-const authenticate = (username, password, apiURL) => {
+const configFissionUser = (username, password, apiURL) => {
   let fissionUser;
   if(!username) {
     throw new Error("Missing option: 'username'");
@@ -88,4 +98,4 @@ const authenticate = (username, password, apiURL) => {
   return fissionUser;
 }
 
-module.exports = { readFile, authenticate, normalizeGatewayURL }
+module.exports = { readFile, configFissionUser, configGatewayURL }
