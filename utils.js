@@ -55,23 +55,8 @@ Fission Storage Adapter: Successfully Connected
   * Currently hosting ${numFiles} files
   `);
 }
- 
-const authenticate = (username, password, apiURL) => {
-  let fissionUser;
-  if(!username) {
-    throw new Error("Missing Environment Variable: FISSION_USERNAME");
-  }
-  
-  if(!password) {
-    throw new Error("Missing Environment Variable: FISSION_PASSWORD");
-  }
-  
-  if(!apiURL) {
-    fissionUser = new Fission.FissionUser(username, password);
-  } else {
-    fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
-  }
-  
+
+const ensureUserAuth = (fissionUser) => {
   (async () => {
     try {
       const cids = await fissionUser.cids();
@@ -80,6 +65,25 @@ const authenticate = (username, password, apiURL) => {
       throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
     }
   })();
+}
+
+const authenticate = (username, password, apiURL) => {
+  let fissionUser;
+  if(!username) {
+    throw new Error("Missing option: 'username'");
+  }
+  
+  if(!password) {
+    throw new Error("Missing option: 'password'");
+  }
+  
+  if(!apiURL) {
+    fissionUser = new Fission.FissionUser(username, password);
+  } else {
+    fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
+  }
+  
+  ensureUserAuth(fissionUser);
 
   return fissionUser;
 }
