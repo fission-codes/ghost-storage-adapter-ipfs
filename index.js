@@ -18,7 +18,8 @@ class FissionStorageAdapter extends BaseAdapter{
         const bytes = await readFile(image.path);
         const cid = await this.fissionUser.add(bytes);
         await this.fissionUser.pin(cid);
-        resolve(`${this.gatewayURL}/${cid}`);
+        const imageURL = `${this.gatewayURL}/ipfs/${cid}`;
+        resolve(imageURL);
       } catch(err) {
         reject(err);
       }

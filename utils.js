@@ -29,9 +29,9 @@ const normalizeURL = (rawURL) => {
 const normalizeGatewayURL = (rawURL) => {
   let normalized = normalizeURL(rawURL);
 
-  // Ensure ipfs path
-  if(!normalized.endsWith("/ipfs")) {
-    normalized += "/ipfs";
+  // Strip ipfs path
+  if(normalized.endsWith("/ipfs")) {
+    normalized = normalized.slice(0,-5);
   }
 
   return normalized;
