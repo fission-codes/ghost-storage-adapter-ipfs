@@ -23,6 +23,7 @@ const normalizeURL = (rawURL) => {
     normalized = normalized.slice(0,-1);
   }
 
+  console.log(`Normalized URL from ${rawURL} to ${normalized}`);
   return normalized;
 }
 
@@ -88,8 +89,10 @@ const configFissionUser = (username, password, apiURL) => {
   }
   
   if(!apiURL) {
+    console.log("Fission User:",username,password);
     fissionUser = new Fission.FissionUser(username, password);
   } else {
+    console.log("Fission User:",username,password,apiURL,normalizeURL(apiURL));
     fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
   
