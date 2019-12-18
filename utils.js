@@ -70,6 +70,7 @@ Fission Storage Adapter: Successfully Connected
 const ensureUserAuth = (fissionUser) => {
   (async () => {
     try {
+      console.log("Ensuring Fission User")
       const cids = await fissionUser.cids();
       connectionSuccessMessage(username, cids.length);
     } catch (err) {
@@ -95,7 +96,12 @@ const configFissionUser = (username, password, apiURL) => {
     console.log("Fission User:",username,password,apiURL,normalizeURL(apiURL));
     fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
-  
+
+  (async () => {
+    const verified = await Fission.verify({username,password});
+    console.log("Verify:",verified)
+
+  })();
   ensureUserAuth(fissionUser);
 
   return fissionUser;
