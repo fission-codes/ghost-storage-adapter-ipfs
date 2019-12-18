@@ -98,9 +98,13 @@ const configFissionUser = (username, password, apiURL) => {
   }
 
   (async () => {
-    const verified = await Fission.verify({username,password});
-    console.log("Verify:",verified)
-
+    try {
+      console.log({username,password});
+      const verified = await Fission.verify({username,password});
+      console.log("Verify:",verified)
+    } catch(err) {
+      console.log("FAILING BASIC AUTH", err)
+    }
   })();
   ensureUserAuth(fissionUser);
 
