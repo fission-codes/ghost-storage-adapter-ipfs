@@ -72,9 +72,14 @@ const ensureUserAuth = (fissionUser) => {
     try {
       console.log("Ensuring Fission User")
       const cids = await fissionUser.cids();
-      console.log("Ensure CIDs",cids)
+      console.log("Ensure CIDs",cids);
+      console.log(`
+      Fission Storage Adapter: Successfully Connected
+        * Logged in as ${username}
+        * Currently hosting ${cids.lengh} files
+        `)
       console.log("Ensure CIDs",cids.length)
-      console.log(connectionSuccessMessage(username, cids.length));
+      //console.log(connectionSuccessMessage(username, cids.length));
     } catch (err) {
       throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
     }
