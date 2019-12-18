@@ -23,7 +23,6 @@ const normalizeURL = (rawURL) => {
     normalized = normalized.slice(0,-1);
   }
 
-  console.log(`Normalized URL from ${rawURL} to ${normalized}`);
   return normalized;
 }
 
@@ -70,7 +69,6 @@ Fission Storage Adapter: Successfully Connected
 const ensureUserAuth = (fissionUser) => {
   (async () => {
     try {
-      console.log("Ensuring Fission User")
       const cids = await fissionUser.cids();
       console.log("Ensure CIDs",cids);
       console.log(`
@@ -78,7 +76,6 @@ const ensureUserAuth = (fissionUser) => {
         * Logged in as ${username}
         * Currently hosting ${cids.lengh} files
         `)
-      console.log("Ensure CIDs",cids.length)
       //console.log(connectionSuccessMessage(username, cids.length));
     } catch (err) {
       throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
@@ -97,24 +94,11 @@ const configFissionUser = (username, password, apiURL) => {
   }
   
   if(!apiURL) {
-    console.log("Fission User:",username,password);
     fissionUser = new Fission.FissionUser(username, password);
   } else {
-    console.log("Fission User:",username,password,apiURL,normalizeURL(apiURL));
     fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
   
-  (async () => {
-    try {
-      console.log({username,password});
-      const verified = await Fission.verify({username,password});
-      console.log("Verify:",verified)
-      const cids = await fissionUser.cids();
-      console.log("CIDs:",cids);
-    } catch(err) {
-      console.log("FAILING BASIC AUTH", err)
-    }
-  })();
   ensureUserAuth(fissionUser);
 
   return fissionUser;
