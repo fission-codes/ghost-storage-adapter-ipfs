@@ -59,25 +59,18 @@ const readFile = (filePath) => {
 }
 
 const connectionSuccessMessage = (username, numFiles) => {
-  return `
+  console.log(`
 Fission Storage Adapter: Successfully Connected
   * Logged in as ${username}
   * Currently hosting ${numFiles} files
-  `;
+  `);
 }
 
-const ensureUserAuth = (fissionUser) => {
+const ensureUserAuth = (fissionUser, username) => {
   (async () => {
     try {
       const cids = await fissionUser.cids();
-      const numFiles = cids.length;
-      console.log("Ensure CIDs",numFiles, cids);
-      console.log(`
-      Fission Storage Adapter: Successfully Connected
-        * Logged in as ${username}
-        * Currently hosting ${numFiles} files
-        `)
-      //console.log(connectionSuccessMessage(username, cids.length));
+      connectionSuccessMessage(username, cids.length);
     } catch (err) {
       throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
     }
@@ -100,7 +93,7 @@ const configFissionUser = (username, password, apiURL) => {
     fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
   
-  ensureUserAuth(fissionUser);
+  ensureUserAuth(fissionUser, username);
 
   return fissionUser;
 }
