@@ -72,7 +72,8 @@ const ensureUserAuth = (fissionUser) => {
     try {
       console.log("Ensuring Fission User")
       const cids = await fissionUser.cids();
-      connectionSuccessMessage(username, cids.length);
+      console.log("Ensure CIDs",cids)
+      //connectionSuccessMessage(username, cids.length);
     } catch (err) {
       throw new Error("Authentication Error\n" + JSON.stringify(err,null,"  "));
     }
@@ -96,12 +97,14 @@ const configFissionUser = (username, password, apiURL) => {
     console.log("Fission User:",username,password,apiURL,normalizeURL(apiURL));
     fissionUser = new Fission.FissionUser(username, password, normalizeURL(apiURL));
   }
-
+  
   (async () => {
     try {
       console.log({username,password});
       const verified = await Fission.verify({username,password});
       console.log("Verify:",verified)
+      const cids = await fissionUser.cids();
+      console.log("CIDs:",cids);
     } catch(err) {
       console.log("FAILING BASIC AUTH", err)
     }
