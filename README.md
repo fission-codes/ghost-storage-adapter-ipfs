@@ -14,3 +14,23 @@ See the [Fission Talk Forum for background](https://talk.fission.codes/t/fission
 [![Discourse](https://img.shields.io/discourse/https/talk.fission.codes/topics)](https://talk.fission.codes)
 
 
+# Config:
+1. Place the storage adapter into `content/adapters/storage/ghost-storage-adapter-ipfs/`
+2. Add the following to your Ghost config file
+
+```json
+{
+    "storage": {
+        "active": "ghost-storage-adapter-ipfs",
+        "ghost-storage-adapter-ipfs": {
+            "username": "fission-user",
+            "password": "fission-user-pass"
+        }
+    }
+}
+```
+3. Provide optional arguments
+ * `apiURL` String: Fission Web API compatible URL (default deferred to fission-suite/client),
+ * `gatewayURL` String: IPFS gateway compatible URL (defaults to https://ipfs.io/ipfs)
+
+That's it, you should be ready to start storing your Ghost images on IPFS!
