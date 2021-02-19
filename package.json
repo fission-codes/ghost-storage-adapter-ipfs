@@ -10,8 +10,8 @@
   },
   "private": true,
   "dependencies": {
-    "@fission-suite/client": "^2.0.0-rc",
-    "ghost-storage-base": "0.0.3"
+    "@fission-suite/client": "^2.0.5",
+    "ghost-storage-base": "0.0.5"
   },
   "engines": {
     "node": ">12"
