@@ -1,5 +1,6 @@
 {
   "name": "ghost-storage-adapter-ipfs",
+  "version": "1.0.0",
   "description": "A storage adapter for the Ghost blogging platform, so that files and images are stored on IPFS",
   "license": "Apache-2.0",
   "main": "index.js",
